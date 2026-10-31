@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동고동락(同苦同樂) 고당 비즈니스 커뮤니티</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .poster-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            transition: all 0.25s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .poster-card:hover {
+            border-color: #f59e0b;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.15);
+        }
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 50%, #92400e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .clickable-btn {
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease-in-out;
+        }
+        .clickable-btn:hover {
+            border-color: #d97706;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+        .word-keep-all {
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+        /* Mobile Bottom Sheet Modal Transition */
+        @media (max-width: 640px) {
+            .modal-dialog {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                border-bottom-left-radius: 0 !important;
+                border-bottom-right-radius: 0 !important;
+                border-top-left-radius: 1.5rem !important;
+                border-top-right-radius: 1.5rem !important;
+                max-height: 85vh;
+                animation: slideUp 0.3s ease-out forwards;
+            }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-amber-600 selection:text-white pb-16 sm:pb-0">
+
+    <!-- Header / Sticky Navigation -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-2.5 h-14 sm:h-16 gap-2">
+                <!-- Brand Logo & Title -->
+                <div class="flex items-center space-x-2.5 cursor-pointer p-1 rounded-xl hover:bg-amber-50 transition" onclick="switchTab('home')">
+                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 p-0.5 shadow-md flex items-center justify-center shrink-0">
+                        <div class="w-full h-full bg-white rounded-[10px] flex items-center justify-center">
+                            <i class="fa-solid fa-shield-halved text-amber-600 text-base sm:text-lg"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-black text-stone-900 tracking-tight text-xs sm:text-base leading-tight word-keep-all">동고동락(同苦同樂) 고당 커뮤니티</span>
+                        <span class="text-[10px] text-amber-600 font-semibold tracking-wider">상생 네트워크</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Top Navigation Menu -->
+                <nav class="hidden lg:flex items-center space-x-2 text-xs font-semibold">
+                    <button id="nav-home" onclick="switchTab('home')" class="nav-btn clickable-btn px-3 py-2 rounded-xl text-amber-700 font-bold bg-amber-50 hover:bg-amber-100 transition flex items-center">
+                        <i class="fa-solid fa-house mr-1.5 text-xs"></i>홈
+                    </button>
+                    <button id="nav-business" onclick="switchTab('business')" class="nav-btn clickable-btn px-3 py-2 rounded-xl text-stone-600 hover:text-amber-700 bg-stone-50 transition flex items-center">
+                        <i class="fa-solid fa-store mr-1.5 text-xs"></i>비즈니스 홍보
+                    </button>
+                    <button id="nav-clubs" onclick="switchTab('clubs')" class="nav-btn clickable-btn px-3 py-2 rounded-xl text-stone-600 hover:text-amber-700 bg-stone-50 transition flex items-center">
+                        <i class="fa-solid fa-users mr-1.5 text-xs"></i>취미/대회
+                    </button>
+                    <button id="nav-jobs" onclick="switchTab('jobs')" class="nav-btn clickable-btn px-3 py-2 rounded-xl text-stone-600 hover:text-amber-700 bg-stone-50 transition flex items-center">
+                        <i class="fa-solid fa-briefcase mr-1.5 text-xs"></i>구인구직/나눔
+                    </button>
+                    <button id="nav-chat" onclick="switchTab('chat')" class="nav-btn clickable-btn px-3 py-2 rounded-xl text-stone-600 hover:text-amber-700 bg-stone-50 transition flex items-center">
+                        <i class="fa-solid fa-comments text-amber-600 mr-1.5 text-xs"></i>스탭 채팅방
+                    </button>
+                </nav>
+
+                <!-- User Auth Status / Action Badge -->
+                <div class="flex items-center space-x-2 shrink-0">
+                    <button onclick="toggleUserRole()" class="clickable-btn px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl text-[11px] font-medium transition flex items-center border border-stone-200">
+                        <i class="fa-solid fa-user-check text-amber-600 mr-1.5"></i>
+                        <span id="userNameTag" class="truncate max-w-[100px] sm:max-w-none">김동문 (관리자)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 flex-grow w-full space-y-6">
+
+        <!-- User Role Status Banner -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs shadow-sm">
+            <div class="flex items-center space-x-2">
+                <span id="roleBadgeLabel" class="shrink-0 px-2 py-0.5 bg-amber-600 text-white font-bold rounded text-[10px]">FREEMIUM PARTNER</span>
+                <span id="roleNoticeText" class="text-stone-700 text-[11px] sm:text-xs">관리자 인증 동문입니다. (1년간 모든 글 작성 및 스탭 채팅방 이용 가능)</span>
+            </div>
+            <button onclick="openModal('authNoticeModal')" class="clickable-btn w-full sm:w-auto px-3 py-1.5 bg-white text-amber-700 hover:bg-amber-100 font-semibold text-[11px] rounded-lg text-center border border-amber-300">
+                인증 상태 및 권한 안내
+            </button>
+        </div>
+
+        <!-- TAB 1: HOME -->
+        <div id="tab-home" class="tab-content space-y-6">
+            
+            <!-- Detailed Category Search (15 Categories) -->
+            <div class="space-y-3">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-stone-900 flex items-center">
+                            <i class="fa-solid fa-magnifying-glass-location text-amber-600 mr-2"></i>업종별 검색
+                        </h3>
+                        <p class="text-[11px] text-stone-500">원하시는 업종 키워드를 터치하거나 검색창을 이용해 보세요.</p>
+                    </div>
+                    <div class="w-full sm:w-80 flex items-center gap-2">
+                        <div class="relative flex-grow">
+                            <input type="text" id="quickSearchInput" oninput="handleQuickSearch(event)" placeholder="상호명, 업종, 키워드 검색..." class="w-full pl-9 pr-8 py-2 bg-white border border-stone-300 rounded-xl text-xs text-stone-900 placeholder-stone-400 focus:outline-none focus:border-amber-500 shadow-sm">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-stone-400 text-xs"></i>
+                            <button onclick="clearSearchAndReset()" class="absolute right-2.5 top-2 text-stone-400 hover:text-stone-600 text-xs">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <button onclick="clearSearchAndReset()" class="clickable-btn shrink-0 px-3 py-2 bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-700 rounded-xl text-xs font-bold transition flex items-center">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>초기화
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Responsive Grid: 2 cols on mobile, 5 cols on desktop -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
+                    <!-- 1. 건설 · 인테리어 -->
+                    <button onclick="quickFilter('건설/건축')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-helmet-safety text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">건설 · 인테리어</div>
+                    </button>
+                    <!-- 2. 교육 · 학원 -->
+                    <button onclick="quickFilter('학원/교육/컨설팅')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-graduation-cap text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">교육 · 학원</div>
+                    </button>
+                    <!-- 3. 금융 · 보험 -->
+                    <button onclick="quickFilter('금융/부동산')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-coins text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">금융 · 보험</div>
+                    </button>
+                    <!-- 4. 병원 · 의료 · 약국 -->
+                    <button onclick="quickFilter('의료/병의원/뷰티')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-hospital text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">병원 · 의료 · 약국</div>
+                    </button>
+                    <!-- 5. 부동산 -->
+                    <button onclick="quickFilter('부동산/분양/중개')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-building-user text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">부동산</div>
+                    </button>
+                    <!-- 6. 법률 · 세무 · 회계 -->
+                    <button onclick="quickFilter('세무/회계/노무')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-scale-balanced text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">법률 · 세무 · 회계</div>
+                    </button>
+                    <!-- 7. 미용 · 건강 · 생활 -->
+                    <button onclick="quickFilter('의료/병의원/뷰티')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-spa text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">미용 · 건강 · 생활</div>
+                    </button>
+                    <!-- 8. 숙박 · 여행 · 레저 -->
+                    <button onclick="quickFilter('스포츠/레저/골프')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-umbrella-beach text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">숙박 · 여행 · 레저</div>
+                    </button>
+                    <!-- 9. 식당 · 카페 · 주점 -->
+                    <button onclick="quickFilter('외식/카페/주점')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-utensils text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">식당 · 카페 · 주점</div>
+                    </button>
+                    <!-- 10. 자동차 · 정비 -->
+                    <button onclick="quickFilter('유통/무역/물류')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-car-burst text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">자동차 · 정비</div>
+                    </button>
+                    <!-- 11. 유통 · 판매 -->
+                    <button onclick="quickFilter('유통/무역/물류')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-store text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">유통 · 판매</div>
+                    </button>
+                    <!-- 12. 제조 · 공장 -->
+                    <button onclick="quickFilter('건설/건축')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-industry text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">제조 · 공장</div>
+                    </button>
+                    <!-- 13. 전문 · 기업서비스 -->
+                    <button onclick="quickFilter('IT/S/W/AI')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-briefcase text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">전문 · 기업서비스</div>
+                    </button>
+                    <!-- 14. 운송 · 물류 -->
+                    <button onclick="quickFilter('유통/무역/물류')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-truck-fast text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">운송 · 물류</div>
+                    </button>
+                    <!-- 15. 농업 · 축산 · 수산 -->
+                    <button onclick="quickFilter('유통/무역/물류')" class="clickable-btn p-3 bg-white hover:bg-amber-50 rounded-xl text-left transition border border-stone-200 space-y-1 group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="w-7 h-7 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-wheat-awn text-xs"></i>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-[9px] text-stone-400 group-hover:text-amber-600 transition"></i>
+                        </div>
+                        <div class="font-bold text-[11px] text-stone-800 word-keep-all">농업 · 축산 · 수산</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recommended Stores Preview -->
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-base sm:text-lg font-bold text-stone-900">추천 스토어</h3>
+                    <button onclick="switchTab('business')" class="clickable-btn px-3 py-1 bg-amber-50 text-xs text-amber-700 rounded-lg hover:underline font-bold border border-amber-200">전체보기 &rarr;</button>
+                </div>
+                <div id="homeBusinessGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"></div>
+            </div>
+
+            <!-- Hero Banner (Relocated to bottom of Home Tab) -->
+            <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-stone-900 via-stone-800 to-amber-950 border border-amber-600/30 p-6 sm:p-8 shadow-xl text-white">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-3 max-w-xl text-center md:text-left">
+                        <span class="inline-flex items-center px-2.5 py-1 bg-amber-900/60 border border-amber-500/50 text-amber-200 font-bold rounded-lg text-[11px]">
+                            <i class="fa-solid fa-handshake text-amber-400 mr-1.5"></i>동문 상생 경제 네트워크
+                        </span>
+                        <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-amber-100 leading-tight">
+                            동문의 신뢰와 양심으로 <br class="hidden sm:inline"><span class="gold-gradient-text">함께 성장하는 커뮤니티</span>
+                        </h1>
+                        <p class="text-stone-300 text-xs sm:text-sm leading-relaxed">
+                            좋은 상품과 서비스만으로 고객을 만나기 어려운 시대<br>든든한 울타리가 되어함께 성장하는 경제 생태계를 만듭시다
+                        </p>
+                        <!-- 정회원 가입 및 등업 문의 안내 -->
+                        <div class="pt-2">
+                            <a href="tel:01044573333" class="inline-flex items-center px-3.5 py-2 bg-amber-900/80 hover:bg-amber-900 border border-amber-500/60 rounded-xl text-amber-200 text-xs sm:text-sm font-bold transition shadow-md group">
+                                <i class="fa-solid fa-phone text-amber-400 mr-2 group-hover:scale-110 transition-transform"></i>
+                                <span>정회원 가입 및 등업 문의: <strong class="text-amber-300 underline underline-offset-2">010-4457-3333</strong></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex flex-col sm:flex-row md:flex-col gap-2.5 w-full md:w-48 shrink-0">
+                        <button onclick="switchTab('business')" class="clickable-btn w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl transition shadow-md text-center flex items-center justify-center">
+                            <i class="fa-solid fa-store mr-2"></i> 사업장 전체보기
+                        </button>
+                        <button onclick="checkAuthAndOpenModal('promoModal')" class="clickable-btn w-full py-3 bg-stone-800 hover:bg-stone-700 text-amber-200 border border-amber-600/40 font-bold text-xs rounded-xl transition text-center flex items-center justify-center">
+                            <i class="fa-solid fa-plus text-amber-400 mr-1.5"></i> 내 사업장 등록
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- TAB 2: BUSINESS PROMOTION -->
+        <div id="tab-business" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-stone-200 pb-4 gap-3">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900 flex items-center">
+                        업종별 동문 비즈니스 홍보
+                    </h2>
+                    <p id="businessSearchNotice" class="text-xs text-stone-500 mt-1">관리자 승인 회원 동문들의 사업장 정보 및 특별 할인 혜택을 소개합니다.</p>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button onclick="clearSearchAndReset()" class="clickable-btn w-full sm:w-auto px-3.5 py-2 bg-white hover:bg-stone-50 text-stone-700 border border-stone-300 font-bold rounded-xl text-xs transition text-center flex items-center justify-center">
+                        <i class="fa-solid fa-house mr-1.5"></i> 홈으로 복귀
+                    </button>
+                    <button onclick="checkAuthAndOpenModal('promoModal')" class="clickable-btn w-full sm:w-auto px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs transition shadow-sm text-center shrink-0">
+                        + 홍보업소 등록
+                    </button>
+                </div>
+            </div>
+            <div id="businessGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4"></div>
+        </div>
+
+        <!-- TAB 3: CLUBS & EVENTS -->
+        <div id="tab-clubs" class="tab-content hidden space-y-6 sm:space-y-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-stone-200 pb-4 gap-3">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">동문 취미 활동 모집 & 대회/행사</h2>
+                    <p class="text-xs text-stone-500 mt-1">고당 스포츠 및 고당 예술 2대 분야 동호회 및 이벤트 소식입니다.</p>
+                </div>
+                <div class="flex w-full sm:w-auto gap-2">
+                    <button onclick="checkAuthAndOpenModal('clubModal')" class="clickable-btn flex-1 sm:flex-initial px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs transition text-center">
+                        + 취미 모임 개설
+                    </button>
+                    <button onclick="checkAuthAndOpenModal('eventModal')" class="clickable-btn flex-1 sm:flex-initial px-3 py-2 bg-stone-800 hover:bg-stone-700 text-amber-200 font-bold rounded-xl text-xs transition text-center">
+                        + 대회/행사 알림 등록
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hobby Category Filter Tabs -->
+            <div class="flex space-x-2 border-b border-stone-200 pb-3 overflow-x-auto">
+                <button onclick="filterClubs('all', this)" class="club-cat-btn clickable-btn shrink-0 px-4 py-1.5 rounded-xl bg-amber-600 text-white font-bold text-xs">전체보기</button>
+                <button onclick="filterClubs('고당 스포츠', this)" class="club-cat-btn clickable-btn shrink-0 px-4 py-1.5 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs hover:bg-amber-100">고당 스포츠</button>
+                <button onclick="filterClubs('고당 예술', this)" class="club-cat-btn clickable-btn shrink-0 px-4 py-1.5 rounded-xl bg-stone-100 text-stone-700 font-bold text-xs hover:bg-amber-100">고당 예술</button>
+            </div>
+
+            <div id="clubGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6"></div>
+
+            <div class="pt-6 border-t border-stone-200 space-y-4">
+                <h3 class="text-lg sm:text-xl font-bold text-stone-900"><i class="fa-solid fa-trophy text-amber-600 mr-2"></i>동문 대회 및 이벤트 행사 알림</h3>
+                <div id="eventGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"></div>
+            </div>
+        </div>
+
+        <!-- TAB 4: JOBS & SHARING -->
+        <div id="tab-jobs" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-stone-200 pb-4 gap-3">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">동문 구인 & 구직 & 무료나눔</h2>
+                    <p class="text-xs text-stone-500 mt-1">동문 기업의 인재 채용과 구직, 그리고 따뜻한 무료나눔 기회를 공유합니다.</p>
+                </div>
+                <button onclick="checkAuthAndOpenModal('jobModal')" class="clickable-btn w-full sm:w-auto px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs transition shadow-sm text-center">
+                    + 구인/구직/나눔 등록하기
+                </button>
+            </div>
+            <div id="jobGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"></div>
+        </div>
+
+        <!-- TAB 5: STAFF CHAT ROOM -->
+        <div id="tab-chat" class="tab-content hidden space-y-6">
+            <div class="border-b border-stone-200 pb-4">
+                <h2 class="text-xl sm:text-2xl font-black text-stone-900">스탭 채팅방 (관리자 전용 대화방)</h2>
+                <p class="text-xs text-stone-500 mt-1">관리자 승인을 완료한 운영진 및 동문 전용 실시간 비즈니스 소통 채널입니다.</p>
+            </div>
+
+            <!-- Chat Lock Notice for Non-Approved Users -->
+            <div id="chatLockNotice" class="hidden p-6 bg-amber-50 border border-amber-200 rounded-2xl text-center space-y-3 shadow-sm">
+                <i class="fa-solid fa-lock text-3xl text-amber-600"></i>
+                <h3 class="text-lg font-bold text-stone-900">스탭 채팅방 접근 권한 제한</h3>
+                <p class="text-xs text-stone-600">관리자 인증 승인 회원에 한해 실시간 채팅 참여가 가능합니다.</p>
+                <button onclick="openModal('authNoticeModal')" class="px-4 py-2 bg-amber-600 text-white font-bold text-xs rounded-xl">관리자 승인 신청하기</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 min-h-[450px] md:h-[500px]">
+                <!-- Chat Room List -->
+                <div class="bg-white border border-stone-200 rounded-2xl p-3 sm:p-4 space-y-3 overflow-y-auto max-h-[200px] md:max-h-none shadow-sm">
+                    <h3 class="font-bold text-stone-800 text-xs mb-2">대화방 목록</h3>
+                    <div id="chatRoomList" class="space-y-2"></div>
+                </div>
+
+                <!-- Active Chat Messages Box -->
+                <div class="md:col-span-3 bg-white border border-stone-200 rounded-2xl flex flex-col justify-between overflow-hidden h-[380px] md:h-auto shadow-sm">
+                    <div class="p-3 sm:p-4 bg-stone-50 border-b border-stone-200">
+                        <h3 id="currentRoomTitle" class="font-bold text-stone-900 text-sm">스탭 채널</h3>
+                        <p id="currentRoomDesc" class="text-[11px] text-stone-500">대화방 소개가 표시됩니다.</p>
+                    </div>
+
+                    <div id="chatMessages" class="p-3 sm:p-4 space-y-3 overflow-y-auto flex-grow bg-stone-100"></div>
+
+                    <form onsubmit="handleSendChatMessage(event)" class="p-2 sm:p-3 bg-white border-t border-stone-200 flex space-x-2">
+                        <input type="text" id="chatInput" placeholder="메시지를 입력하세요..." class="flex-grow px-3 py-2 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 focus:outline-none">
+                        <button type="submit" class="px-3 sm:px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl shrink-0">전송</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MOBILE BOTTOM NAVIGATION BAR -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 z-50 py-2 px-3 flex justify-around items-center shadow-lg">
+        <button id="b-nav-home" onclick="switchTab('home')" class="flex flex-col items-center text-amber-600 transition">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="text-[10px] mt-0.5 font-bold">홈</span>
+        </button>
+        <button id="b-nav-business" onclick="switchTab('business')" class="flex flex-col items-center text-stone-400 hover:text-amber-600 transition">
+            <i class="fa-solid fa-store text-base"></i>
+            <span class="text-[10px] mt-0.5">비즈니스</span>
+        </button>
+        <button id="b-nav-clubs" onclick="switchTab('clubs')" class="flex flex-col items-center text-stone-400 hover:text-amber-600 transition">
+            <i class="fa-solid fa-users text-base"></i>
+            <span class="text-[10px] mt-0.5">취미/대회</span>
+        </button>
+        <button id="b-nav-jobs" onclick="switchTab('jobs')" class="flex flex-col items-center text-stone-400 hover:text-amber-600 transition">
+            <i class="fa-solid fa-briefcase text-base"></i>
+            <span class="text-[10px] mt-0.5">구인/나눔</span>
+        </button>
+        <button id="b-nav-chat" onclick="switchTab('chat')" class="flex flex-col items-center text-stone-400 hover:text-amber-600 transition">
+            <i class="fa-solid fa-comments text-base"></i>
+            <span class="text-[10px] mt-0.5">채팅방</span>
+        </button>
+    </nav>
+
+    <!-- MODAL FOR AUTH NOTICE -->
+    <div id="authNoticeModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="modal-dialog bg-white border border-stone-200 rounded-t-3xl sm:rounded-2xl max-w-md w-full p-6 shadow-2xl relative text-center space-y-4 max-h-[85vh] overflow-y-auto">
+            <button onclick="closeModal('authNoticeModal')" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button> 
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center mx-auto text-amber-600 text-xl">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+                <h3 id="authNoticeTitle" class="text-lg font-bold text-stone-900">관리자 인증 및 승인 권한 안내</h3>
+                <p id="authNoticeDesc" class="text-xs text-stone-600 mt-2 leading-relaxed word-keep-all">
+                    비즈니스 홍보, 취미 모집, 대회/행사 알림, 구인구직 등록 및 스탭 채팅방 이용은 관리자 인증을 완료한 동문(1년간 유효)만 가능합니다.
+                </p>
+            </div>
+            <div class="flex space-x-2 pt-2">
+                <button onclick="closeModal('authNoticeModal')" class="flex-1 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-bold text-xs border border-stone-300">
+                    닫기
+                </button>
+                <button onclick="requestAdminAuth()" class="clickable-btn flex-1 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold text-xs shadow-md">
+                    관리자 승인 신청
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FOR PROMO REGISTRATION -->
+    <div id="promoModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="modal-dialog bg-white border border-stone-200 rounded-t-3xl sm:rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('promoModal')" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold text-stone-900 mb-3 flex items-center"><i class="fa-solid fa-store text-amber-600 mr-2"></i> 동문 비즈니스 / 홍보 등록</h3>
+            <form id="promoForm" onsubmit="handlePromoSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">상호명 / 기업명 *</label>
+                    <input type="text" id="pTitle" required placeholder="예: (주)고당 브루어리" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">업종 카테고리 *</label>
+                    <select id="pCategory" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                        <option value="건설/건축">건설 / 건축 / 인테리어</option>
+                        <option value="금융/부동산">금융 / 부동산 / 자산</option>
+                        <option value="법무/세무">법무 / 세무 / 회계</option>
+                        <option value="외식/카페">외식 / 카페 / 주점</option>
+                        <option value="의료/건강">의료 / 건강 / 뷰티</option>
+                        <option value="스포츠/레저/골프">숙박 / 여행 / 레저</option>
+                        <option value="학원/교육/컨설팅">교육 / 학원</option>
+                        <option value="유통/무역/물류">유통 / 물류 / 농수산</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">대표자명 (기수) *</label>
+                        <input type="text" id="pOwner" required placeholder="예: 이맛깔 (31기)" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">연락처 *</label>
+                        <input type="text" id="pPhone" required placeholder="예: 010-1234-5678" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">동문 특별 혜택 *</label>
+                    <input type="text" id="pBenefit" required placeholder="예: 동문 구매 시 전품목 20% 특별 할인" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">사업장 소개 *</label>
+                    <textarea id="pDesc" rows="3" required placeholder="사업장 소개 및 주요 상품 안내" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-xl font-bold transition text-sm shadow-sm">홍보업소 등록하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CLUB MODAL -->
+    <div id="clubModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="modal-dialog bg-white border border-stone-200 rounded-t-3xl sm:rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('clubModal')" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold text-stone-900 mb-3 flex items-center"><i class="fa-solid fa-users text-amber-600 mr-2"></i> 동문 취미 모임 개설</h3>
+            <form id="clubForm" onsubmit="handleClubSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">모임명 *</label>
+                    <input type="text" id="cTitle" required placeholder="예: 고당 파크골프 동호회" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">분류 *</label>
+                        <select id="cCategory" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                            <option value="고당 스포츠">고당 스포츠</option>
+                            <option value="고당 예술">고당 예술</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">모임장 (기수) *</label>
+                        <input type="text" id="cLeader" required placeholder="예: 김파크 (29기)" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">정기 모임 일시 *</label>
+                    <input type="text" id="cSchedule" required placeholder="예: 매월 둘째 주 토요일 오전 09:00" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">모임 소개 *</label>
+                    <textarea id="cDesc" rows="3" required placeholder="모임의 취지 및 활동 내용" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-xl font-bold transition text-sm shadow-sm">모임 개설하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EVENT MODAL -->
+    <div id="eventModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="modal-dialog bg-white border border-stone-200 rounded-t-3xl sm:rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('eventModal')" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold text-stone-900 mb-3 flex items-center"><i class="fa-solid fa-trophy text-amber-600 mr-2"></i> 대회 / 행사 알림 등록</h3>
+            <form id="eventForm" onsubmit="handleEventSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">행사명 *</label>
+                    <input type="text" id="eTitle" required placeholder="예: 제5회 고당 동문배 파크골프 친선 대회" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">분류 *</label>
+                        <select id="eCategory" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                            <option value="고당 스포츠">고당 스포츠</option>
+                            <option value="고당 예술">고당 예술</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-stone-700 mb-1">일시 *</label>
+                        <input type="text" id="eDate" required placeholder="예: 2027년 5월 15일(토) 10:00" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">장소 *</label>
+                    <input type="text" id="eLocation" required placeholder="예: 고당 파크골프장 메인 홀" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">상세 설명 *</label>
+                    <textarea id="eDesc" rows="3" required placeholder="행사 프로그램 및 시상 내용 안내" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-xl font-bold transition text-sm shadow-sm">행사 등록하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JOB MODAL -->
+    <div id="jobModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="modal-dialog bg-white border border-stone-200 rounded-t-3xl sm:rounded-2xl max-w-lg w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('jobModal')" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold text-stone-900 mb-3 flex items-center"><i class="fa-solid fa-briefcase text-amber-600 mr-2"></i> 구인 / 구직 / 무료나눔 등록</h3>
+            <form id="jobForm" onsubmit="handleJobSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">구분 *</label>
+                    <select id="jType" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                        <option value="구인">구인 (동문 우대 채용)</option>
+                        <option value="구직">구직 (경력 및 자문)</option>
+                        <option value="무료나눔">무료나눔 (물품 및 기자재 나눔)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">제목 *</label>
+                    <input type="text" id="jTitle" required placeholder="예: [무료나눔] 사무용 의자 3세트 나눔합니다" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900">
+                </div>
+                <div>
+                    <label class="block font-semibold text-stone-700 mb-1">상세 내용 및 연락처 *</label>
+                    <textarea id="jDesc" rows="3" required placeholder="상세 내용, 수령 장소 및 연락처 작성" class="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white py-2.5 rounded-xl font-bold transition text-sm shadow-sm">글 등록하기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-300 border-t border-stone-800 py-8 text-center text-xs mb-14 sm:mb-0">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <div class="font-bold text-amber-400">(주) 고 당 커뮤니티</div>
+            <p class="text-[11px] text-stone-400">소상공인과 개인 사업자의 든든한 마케팅 파트너 &bull; 함께 나누고, 함께 성장하는 고당 동문 공동체</p>
+            <p class="text-[10px] text-stone-500">© 2027 (주) 고 당 커뮤니티. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let userAuth = { status: 'APPROVED', daysLeft: 365 };
+        let currentRoomId = 1;
+
+        let businessList = [
+            { id: 1, title: "(주) 고당 파크골프 용품 마트", category: "스포츠/레저/골프", owner: "김고당 (24기)", phone: "010-1234-5678", benefit: "전 품목 20% 할인 및 무료 배송", desc: "최고급 소재 파크골프 채 및 액세서리 제휴 공급.", img: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=600&auto=format&fit=crop&q=80" },
+            { id: 2, title: "고당 셰프 외식 브루어리", category: "외식/카페/주점", owner: "이맛깔 (31기)", phone: "02-987-6543", benefit: "수제맥주 2병 및 안주 서비스", desc: "동문 정기모임 환영. 100석 단체 연회석 보유.", img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80" },
+            { id: 3, title: "고당 소프트웨어 & AI 마케팅", category: "IT/S/W/AI", owner: "박디지털 (38기)", phone: "010-5555-8888", benefit: "웹사이트 구축 & AI 30% 할인", desc: "홈페이지 개발, AI 자동화 프로그램 컨설팅.", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format&fit=crop&q=80" },
+            { id: 4, title: "고당 명문 입시 & 기능 학원", category: "학원/교육/컨설팅", owner: "정배움 (27기)", phone: "010-3333-7777", benefit: "자녀 등록 시 수강료 15% 감면", desc: "초중고 맞춤형 입시 지도 및 전문 자격증 과정.", img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80" },
+            { id: 5, title: "고당 부동산 중개 & 자산관리", category: "부동산/분양/중개", owner: "최투자 (22기)", phone: "02-345-6789", benefit: "자산 컨설팅 무료 및 수수료 우대", desc: "상가, 공장, 입지 분석 및 상업용 부동산 자문.", img: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&auto=format&fit=crop&q=80" },
+            { id: 6, title: "고당 종합 건축 & 인테리어", category: "건설/건축/인테리어", owner: "강건축 (19기)", phone: "010-9999-1234", benefit: "3D 무료 설계 및 견적 우대", desc: "상업 공간 전문 리모델링 및 종합 시공.", img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&auto=format&fit=crop&q=80" },
+            { id: 7, title: "고당 글로벌 물류센터", category: "유통/무역/물류", owner: "한물류 (25기)", phone: "010-4444-2222", benefit: "첫 달 물류 보관료 50% 할인", desc: "전국 익일 배송 및 풀필먼트 서비스 전문.", img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop&q=80" },
+            { id: 8, title: "고당 바른 세무회계 사무소", category: "세무/회계/노무", owner: "윤세무 (33기)", phone: "02-777-8899", benefit: "무료 세무 진단 및 수수료 우대", desc: "법인/개인 기장대행 및 세무조사 전문 자문.", img: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80" }
+        ];
+
+        let clubList = [
+            { id: 1, title: "고당 파크골프 동호회", category: "고당 스포츠", leader: "김파크 (29기)", schedule: "매월 둘째 주 토요일 09:00", desc: "초보자 환영! 건강을 다지는 친목 파크골프 모임.", members: 34 },
+            { id: 2, title: "고당 챔피언스 축구단", category: "고당 스포츠", leader: "박축구 (35기)", schedule: "매주 일요일 오전 07:00", desc: "열정 넘치는 동문 축구단 친선 경기.", members: 28 },
+            { id: 3, title: "고당 하모니 합창단", category: "고당 예술", leader: "최클래식 (26기)", schedule: "격주 목요일 저녁 19:30", desc: "음악을 사랑하는 동문들의 정기 연주회 모임.", members: 19 }
+        ];
+
+        let eventList = [
+            { id: 1, title: "제5회 고당 동문배 파크골프 친선 대회", category: "고당 스포츠", status: "접수중", date: "2027년 5월 15일(토) 10:00", location: "고당 파크골프장", desc: "풍성한 상품과 기수별 대항전 개최!" },
+            { id: 2, title: "고당 동문 시화 및 사진 정기 전시회", category: "고당 예술", status: "진행예정", date: "2027년 6월 1일(화)", location: "고당 아트홀", desc: "동문 작가들의 유화 및 사진 작품 출품." }
+        ];
+
+        let jobList = [
+            { id: 1, type: "구인", title: "(주)고당 정밀기계 - 기술직 동문 우대 채용", desc: "성실하고 책임감 있는 인재 모집. 경력 우대." },
+            { id: 2, type: "구직", title: "30년 경력 재무/회계 자문 컨설팅", desc: "동문 기업의 세무 및 자금 운용 자문 지원." },
+            { id: 3, type: "무료나눔", title: "[무료나눔] 사무용 의자 & 책상 세트 나눔", desc: "원목 회의탁자(6인용) 무료 나눔합니다." }
+        ];
+
+        let chatRooms = [
+            { id: 1, title: "고당 비즈니스 운영진 채널", count: 12, desc: "커뮤니티 운영 및 홍보 일정 논의" },
+            { id: 2, title: "기수별 스탭 대표자 회의실", count: 24, desc: "기수별 소식 교류 및 행사 협의" }
+        ];
+
+        let chatMessages = [
+            { id: 1, roomId: 1, sender: "운영위원장 (22기)", text: "안녕하십니까 동문 여러분, 환영합니다.", time: "오전 10:00", isMe: false }
+        ];
+
+        function renderBusiness(filteredList = businessList) {
+            const container = document.getElementById('businessGrid');
+            const homeContainer = document.getElementById('homeBusinessGrid');
+            
+            const html = filteredList.map(item => `
+                <div class="poster-card rounded-2xl overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-36 sm:h-44 overflow-hidden bg-stone-100">
+                            <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover transition hover:scale-105 duration-300">
+                            <span class="absolute top-2 left-2 px-2 py-0.5 bg-stone-900/80 text-amber-300 border border-amber-500/30 text-[9px] font-bold rounded-md backdrop-blur-sm">
+                                ${item.category}
+                            </span>
+                        </div>
+                        <div class="p-3 sm:p-4 space-y-1.5">
+                            <h3 class="font-bold text-stone-900 text-xs sm:text-base truncate">${item.title}</h3>
+                            <p class="text-[11px] sm:text-xs text-amber-700 font-semibold truncate flex items-center">
+                                <i class="fa-solid fa-gift mr-1"></i> ${item.benefit}
+                            </p>
+                            <p class="text-[11px] sm:text-xs text-stone-600 leading-relaxed line-clamp-2">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-3 sm:p-4 pt-0 space-y-2 text-xs border-t border-stone-100 mt-1">
+                        <div class="flex justify-between items-center text-stone-500 text-[10px] sm:text-xs pt-1.5">
+                            <span class="truncate"><strong>대표:</strong> ${item.owner}</span>
+                            <span><strong>문의:</strong> ${item.phone}</span>
+                        </div>
+                        <button onclick="alert('${item.title} - ${item.phone} 로 전화 연결됩니다.')" class="clickable-btn w-full py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition text-[11px] sm:text-xs shadow-sm">
+                            상담 문의하기
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            if (container) container.innerHTML = html;
+            if (homeContainer) homeContainer.innerHTML = html;
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const targetTab = document.getElementById(`tab-${tabName}`);
+            if (targetTab) targetTab.classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-amber-700', 'font-bold', 'bg-amber-50');
+                btn.classList.add('text-stone-600');
+            });
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) {
+                activeNav.classList.add('text-amber-700', 'font-bold', 'bg-amber-50');
+                activeNav.classList.remove('text-stone-600');
+            }
+
+            // Bottom Navigation active highlight
+            ['home', 'business', 'clubs', 'jobs', 'chat'].forEach(t => {
+                const bEl = document.getElementById(`b-nav-${t}`);
+                if (bEl) {
+                    if (t === tabName) {
+                        bEl.classList.remove('text-stone-400');
+                        bEl.classList.add('text-amber-600', 'font-bold');
+                    } else {
+                        bEl.classList.add('text-stone-400');
+                        bEl.classList.remove('text-amber-600', 'font-bold');
+                    }
+                }
+            });
+
+            if (tabName === 'home') {
+                const input = document.getElementById('quickSearchInput');
+                if (input) input.value = '';
+                renderBusiness(businessList);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openModal(id) { document.getElementById(id)?.classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
+
+        function checkAuthAndOpenModal(modalId) {
+            if (userAuth.status === 'APPROVED') {
+                openModal(modalId);
+            } else {
+                openModal('authNoticeModal');
+            }
+        }
+
+        function toggleUserRole() {
+            userAuth.status = userAuth.status === 'APPROVED' ? 'PENDING' : 'APPROVED';
+            const badge = document.getElementById('roleBadgeLabel');
+            const notice = document.getElementById('roleNoticeText');
+            if (userAuth.status === 'APPROVED') {
+                if (badge) badge.innerText = "FREEMIUM PARTNER";
+                if (notice) notice.innerText = "관리자 인증 동문입니다. (1년간 모든 글 작성 및 스탭 채팅방 이용 가능)";
+            } else {
+                if (badge) badge.innerText = "GUEST";
+                if (notice) notice.innerText = "미인증 상태입니다. 관리자 승인 후 글 작성 및 채팅이 가능합니다.";
+            }
+        }
+
+        function requestAdminAuth() {
+            alert('관리자 승인 신청이 완료되었습니다.');
+            closeModal('authNoticeModal');
+        }
+
+        function quickFilter(cat) {
+            switchTab('business');
+            const filtered = businessList.filter(b => b.category === cat);
+            const notice = document.getElementById('businessSearchNotice');
+            if (notice) notice.innerHTML = `<span class="text-amber-700 font-bold">'${cat}'</span> 업종 검색 결과 (${filtered.length}건)`;
+            renderBusiness(filtered);
+        }
+
+        function handleQuickSearch(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const filtered = businessList.filter(b => b.title.toLowerCase().includes(query) || b.owner.toLowerCase().includes(query) || b.category.toLowerCase().includes(query));
+            renderBusiness(filtered);
+        }
+
+        function clearSearchAndReset() {
+            const input = document.getElementById('quickSearchInput');
+            if (input) input.value = '';
+            renderBusiness(businessList);
+            switchTab('home');
+        }
+
+        function handlePromoSubmit(e) {
+            e.preventDefault();
+            businessList.unshift({
+                id: businessList.length + 1,
+                title: document.getElementById('pTitle').value,
+                category: document.getElementById('pCategory').value,
+                owner: document.getElementById('pOwner').value,
+                phone: document.getElementById('pPhone').value,
+                benefit: document.getElementById('pBenefit').value,
+                desc: document.getElementById('pDesc').value,
+                img: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80"
+            });
+            renderBusiness();
+            closeModal('promoModal');
+            alert('홍보업소가 성공적으로 등록되었습니다.');
+        }
+
+        function handleClubSubmit(e) {
+            e.preventDefault();
+            clubList.unshift({
+                id: clubList.length + 1,
+                title: document.getElementById('cTitle').value,
+                category: document.getElementById('cCategory').value,
+                leader: document.getElementById('cLeader').value,
+                schedule: document.getElementById('cSchedule').value,
+                desc: document.getElementById('cDesc').value,
+                members: 1
+            });
+            renderClubs();
+            closeModal('clubModal');
+            alert('모임이 개설되었습니다.');
+        }
+
+        function handleEventSubmit(e) {
+            e.preventDefault();
+            eventList.unshift({
+                id: eventList.length + 1,
+                title: document.getElementById('eTitle').value,
+                category: document.getElementById('eCategory').value,
+                date: document.getElementById('eDate').value,
+                location: document.getElementById('eLocation').value,
+                desc: document.getElementById('eDesc').value,
+                status: "접수중"
+            });
+            renderEvents();
+            closeModal('eventModal');
+            alert('행사가 등록되었습니다.');
+        }
+
+        function handleJobSubmit(e) {
+            e.preventDefault();
+            jobList.unshift({
+                id: jobList.length + 1,
+                type: document.getElementById('jType').value,
+                title: document.getElementById('jTitle').value,
+                desc: document.getElementById('jDesc').value
+            });
+            renderJobs();
+            closeModal('jobModal');
+            alert('글이 등록되었습니다.');
+        }
+
+        function renderClubs() {
+            const container = document.getElementById('clubGrid');
+            if (!container) return;
+            container.innerHTML = clubList.map(c => `
+                <div class="poster-card rounded-2xl p-4 flex flex-col justify-between space-y-3 text-xs">
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded">${c.category}</span>
+                            <span class="text-stone-500"><i class="fa-solid fa-users text-amber-600 mr-1"></i>${c.members}명</span>
+                        </div>
+                        <h4 class="font-bold text-stone-900 text-sm mb-1">${c.title}</h4>
+                        <p class="text-stone-600 mb-2">${c.desc}</p>
+                        <div class="p-2 bg-stone-50 rounded-lg text-stone-600 space-y-0.5 border border-stone-100">
+                            <div>모임장: ${c.leader}</div>
+                            <div>일시: ${c.schedule}</div>
+                        </div>
+                    </div>
+                    <button onclick="alert('${c.title} 가입 신청이 완료되었습니다.')" class="clickable-btn w-full py-2 bg-amber-600 text-white font-bold rounded-xl">가입 신청</button>
+                </div>
+            `).join('');
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('eventGrid');
+            if (!container) return;
+            container.innerHTML = eventList.map(e => `
+                <div class="poster-card rounded-2xl p-4 flex flex-col justify-between space-y-3 text-xs">
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-[10px] font-bold rounded">${e.category}</span>
+                            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded">${e.status}</span>
+                        </div>
+                        <h4 class="font-bold text-stone-900 text-sm mb-1">${e.title}</h4>
+                        <p class="text-stone-600 mb-2">${e.desc}</p>
+                        <div class="p-2 bg-stone-50 rounded-lg text-stone-600 space-y-0.5 border border-stone-100">
+                            <div>일시: ${e.date}</div>
+                            <div>장소: ${e.location}</div>
+                        </div>
+                    </div>
+                    <button onclick="alert('${e.title} 참가 접수되었습니다.')" class="clickable-btn w-full py-2 bg-stone-900 text-amber-200 font-bold rounded-xl">참가 신청</button>
+                </div>
+            `).join('');
+        }
+
+        function renderJobs() {
+            const container = document.getElementById('jobGrid');
+            if (!container) return;
+            container.innerHTML = jobList.map(j => `
+                <div class="poster-card rounded-2xl p-4 flex flex-col justify-between space-y-2 text-xs">
+                    <span class="px-2 py-0.5 bg-amber-600 text-white font-bold rounded w-max text-[10px]">${j.type}</span>
+                    <h4 class="font-bold text-stone-900 text-sm">${j.title}</h4>
+                    <p class="text-stone-600">${j.desc}</p>
+                    <button onclick="alert('담당자에게 연결됩니다.')" class="w-full py-2 bg-stone-100 text-stone-700 border border-stone-300 font-bold rounded-xl hover:bg-stone-200">상세 문의</button>
+                </div>
+            `).join('');
+        }
+
+        function renderChatRooms() {
+            const container = document.getElementById('chatRoomList');
+            if (!container) return;
+            container.innerHTML = chatRooms.map(r => `
+                <div onclick="currentRoomId=${r.id}; renderChatMessages();" class="p-2.5 rounded-xl cursor-pointer transition ${r.id === currentRoomId ? 'bg-amber-50 border border-amber-300' : 'bg-stone-50 hover:bg-stone-100'}">
+                    <div class="flex justify-between items-center text-xs"><strong class="text-stone-900">${r.title}</strong><span class="text-[10px] text-amber-600">${r.count}명</span></div>
+                </div>
+            `).join('');
+        }
+
+        function renderChatMessages() {
+            const container = document.getElementById('chatMessages');
+            if (!container) return;
+            container.innerHTML = chatMessages.map(m => `
+                <div class="flex flex-col ${m.isMe ? 'items-end' : 'items-start'} space-y-1 text-xs">
+                    <span class="text-[10px] text-stone-500">${m.sender} &bull; ${m.time}</span>
+                    <div class="p-2.5 rounded-xl max-w-[80%] ${m.isMe ? 'bg-amber-600 text-white' : 'bg-white text-stone-800 border border-stone-200'}">${m.text}</div>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleSendChatMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chatInput');
+            if (!input || !input.value.trim()) return;
+            chatMessages.push({ id: chatMessages.length + 1, roomId: currentRoomId, sender: "나", text: input.value.trim(), time: "방금 전", isMe: true });
+            input.value = '';
+            renderChatMessages();
+        }
+
+        function filterClubs(cat, btn) {
+            document.querySelectorAll('.club-cat-btn').forEach(b => {
+                b.classList.remove('bg-amber-600', 'text-white');
+                b.classList.add('bg-stone-100', 'text-stone-700');
+            });
+            btn.classList.add('bg-amber-600', 'text-white');
+            renderClubs();
+        }
+
+        window.onload = function() {
+            renderBusiness();
+            renderClubs();
+            renderEvents();
+            renderJobs();
+            renderChatRooms();
+            renderChatMessages();
+        };
+    </script>
+</body>
+</html>
